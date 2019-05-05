@@ -1,0 +1,11 @@
+APScheduler==3.6.0
+cprint==1.1
+ImageHash==4.0
+numpy==1.16.3
+Pillow==6.0.0
+pytz==2019.1
+PyWavelets==1.0.3
+scipy==1.2.1
+six==1.12.0
+termcolor==1.1.0
+tzlocal==1.5.1
