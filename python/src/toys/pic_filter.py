@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 import getopt
-import multiprocessing
 import os
 import random
 import shutil
 import sys
 
 from datetime import datetime
-from time import sleep
 
 import imagehash
 import patoolib
@@ -92,15 +90,7 @@ def job(source_path_):
             if not is_image(file_path):
                 try:
                     format, compression = patoolib.get_archive_format(file_path)
-                    file_base_path = os.path.dirname(file_path)
-
-                    fn, ext = get_file_name_and_ext(file_path)
-                    fbp = file_base_path + os.sep + fn
-                    if os.path.exists(fbp):
-                        remove_file(fbp)
-                    else:
-                        os.mkdir(fbp)
-                    target = patoolib.extract_archive(file_path, 1, outdir=fbp)
+                    target = patoolib.extract_archive(file_path, outdir=source_path_)
                     remove_file(file_path)
                     continue
                 except PatoolError as ex:
@@ -122,6 +112,7 @@ def job(source_path_):
 
 
 def process_file_by_hash(h_dict_, hash_file_, file_path):
+
     for key in h_dict_.keys():
         if same_img(key, hash_file_):
             remove_file(file_path)
@@ -160,11 +151,6 @@ def same_img(first_hash, second_hash):
     return is_same_img
 
 
-def atest1(a):
-    a = 0
-    print(f"{a}\n")
-
-
 if __name__ == '__main__':
 
     h_dict = {}
@@ -186,17 +172,8 @@ if __name__ == '__main__':
     sched = BlockingScheduler()
     sched.add_job(lambda: job(source_path), 'interval', seconds=5)
 
-    pool = multiprocessing.Pool(processes=2)
-
-    result = []
-    for of in range(1):
-        res = pool.apply_async(atest1)
-        result.append(res)
-
-    pool.close()
-    pool.join()
-    for res in result:
-        h = res.get()
+    for of in get_all_files(output):
+        h = hash_file(of)
         if h is not None:
             h_dict[h[1]] = h[0]
 
