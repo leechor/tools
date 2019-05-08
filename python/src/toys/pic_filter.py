@@ -99,9 +99,13 @@ def job(source_path_):
         except Exception as ex:
             continue
 
-        file, hashes, *_ = hash_file(file_path)
+        file, hashes, file_size, *_ = hash_file(file_path)
 
         if hashes is None:
+            continue
+
+        if file_size < 30 * 1024:
+            remove_file(file)
             continue
 
         process_file_by_hash(h_dict, hashes, file)

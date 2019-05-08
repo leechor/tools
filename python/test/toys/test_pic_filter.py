@@ -7,7 +7,7 @@ file3_path = "data/3.JPG"
 
 
 def test_hash_file():
-    _, h1, *_ = hash_file(file1_path)
+    _, h1, file_size, *_ = hash_file(file1_path)
     _, h2, *_ = hash_file(file2_path)
     assert h1 == h2
 
