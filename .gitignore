@@ -1,2 +1,9 @@
 /.idea/
 /venv/
+
+ja/.gradle/
+ja/.idea/
+ja/build.gradle
+ja/gradle/
+ja/gradlew
+ja/gradlew.bat
