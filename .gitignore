@@ -7,3 +7,5 @@ ja/build.gradle
 ja/gradle/
 ja/gradlew
 ja/gradlew.bat
+/.gradle/
+/gradle/
