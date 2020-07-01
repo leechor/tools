@@ -20,7 +20,7 @@ groups = ['springcloud', 'sanyuan', 'devops']
 for index in range(10):
     url = "http://%s/api/v4/projects?private_token=%s&per_page=100&page=%d&order_by=name" % (
         gitlabAddr, gitlabToken, index)
-    print(url)
+    # print(url)
 
     if sys.version_info < (3, 0):
         allProjects = urllib.urlopen(url)
@@ -34,13 +34,13 @@ for index in range(10):
         try:
             thisProjectURL = thisProject['ssh_url_to_repo']
             thisProjectPath: str = thisProject['path_with_namespace']
-            print(thisProjectURL + ' ' + thisProjectPath)
+            # print(thisProjectURL + ' ' + thisProjectPath)
 
             if thisProjectPath[:thisProjectPath.index('/')] not in groups:
                 continue
 
             if os.path.exists(thisProjectPath):
-                command = shlex.split('git -C "%s" fetch' % (thisProjectPath))
+                command = shlex.split('git -C "%s" fetch --all' % (thisProjectPath))
             else:
                 command = shlex.split('git clone --bare %s %s' % (thisProjectURL, thisProjectPath))
 
