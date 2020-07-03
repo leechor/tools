@@ -39,8 +39,10 @@ for index in range(10):
             if thisProjectPath[:thisProjectPath.index('/')] not in groups:
                 continue
 
+            thisProjectPath = thisProjectPath + '.git'
             if os.path.exists(thisProjectPath):
                 command = shlex.split('git -C "%s" fetch --all' % (thisProjectPath))
+
             else:
                 command = shlex.split('git clone --bare %s %s' % (thisProjectURL, thisProjectPath))
 
