@@ -12,10 +12,10 @@ import subprocess, shlex
 import time
 import os
 
-gitlabAddr = 'gitlab.hl.xa:9000/'
-gitlabToken = '5y_hbQkspXzpMbay2Xk4'
+gitlabAddr = sys.argv[1]  # 'gitlab.hl.xa:9000/'
+gitlabToken = sys.argv[2]  # '5y_hbQkspXzpMbay2Xk4'
 
-groups = ['springcloud', 'sanyuan', 'devops']
+groups = ['springcloud', 'sanyuan', 'devops', 'bigdata', 'bigdat', 'znyy', 'ppfx', '503']
 
 for index in range(10):
     url = "http://%s/api/v4/projects?private_token=%s&per_page=100&page=%d&order_by=name" % (
