@@ -1,10 +1,10 @@
 
 console.log("start")
 
+var items = []
 current_url = window.location.href
 if (current_url.indexOf("recommend") > 0) {
     console.log("start renCai")
-
     renCai()
 } else if (current_url.indexOf("detail") > 0) {
     console.log("start jianli")
@@ -32,6 +32,16 @@ function renCai() {
         window.scrollBy(0, document.body.scrollHeight)
     }, 4000)
 
+    setInterval(function () {
+        no = items.shift();
+        if (!no) {
+            return;
+        }
+        // console.log("click")
+        // console.log(no.querySelector("div > div"))
+        no.querySelector("div > div").click();
+    }, 1000)
+
     var mo = new MutationObserver((records, observer) => {
         for (const record of records) {
             no = record.target
@@ -51,16 +61,20 @@ function renCai() {
                                 || no.querySelector(city_path).innerText != '西安'
                                 || (!no.querySelector(activity_path) || activity_statuses.indexOf(no.querySelector(activity_path).className) < 0)
                                 || (!no.querySelector(work_status_path) || no.querySelector(work_status_path).innerText != "正在找工作")) {
-                                no.style.display = "none" 
-                                // n = no.querySelector(basic_info__title_path + " > div.talent-basic-info__name > div.talent-basic-info__name--inner")
-                                // n.innerText = n.innerText + "不显示"
+                                // no.style.display = "none" 
+                                n = no.querySelector(basic_info__title_path + " > div.talent-basic-info__name > div.talent-basic-info__name--inner")
+                                n.innerText = n.innerText + "不符合"
                                 // console.log(no.querySelector("div > div").querySelector("div").classList.contains("is-read"))                                                   
                                 // console.log(no.querySelector(sex_path).innerText)
                                 // console.log(no.querySelector(city_path).innerText)
                                 // console.log((!no.querySelector(activity_path) || activity_statuses.indexOf(no.querySelector(activity_path).className) < 0))
                                 // console.log((!no.querySelector(work_status_path) || no.querySelector(work_status_path).innerText != "正在找工作"))                                
                             } else {
-                                // no.querySelector(is_read_path).click();                                
+                                if (items.indexOf(no) < 0) {
+                                    items.push(no)
+                                    n = no.querySelector(basic_info__title_path + " > div.talent-basic-info__name > div.talent-basic-info__name--inner")
+                                    console.log(n.innerText)
+                                }
                             }
                         } else if (no.className == "recommend-item__inner is-read") {
                             // console.log(no)
@@ -88,7 +102,9 @@ function renCai() {
 }
 
 function jianli() {
-    document.querySelector("#root > div.app-main > div.app-main__content > div.resume-detail-container > div > div.resume-sidebar.no-print > div > div.resume-sidebar__main > div.resume-sidebar__actions.is-operate > a")
-        .click();
+    e = "#root > div.app-main > div.app-main__content > div.resume-detail-container > div > div.resume-sidebar.no-print > div > div.resume-sidebar__main > div.resume-sidebar__actions.is-operate > a"
+    if(document.querySelector(e + " > div > span").innerText == "收藏") {
+        document.querySelector(e).click()
+    }    
     window.close();
 }
