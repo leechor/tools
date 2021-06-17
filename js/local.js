@@ -18,6 +18,9 @@ const continuationActions = {
     "payConfirm": payConfirm
 };
 
+let loaded = false;
+let cardDay = null;
+
 const _continuation = sessionStorage.getItem(continuationKey);
 if (_continuation) {
     sessionStorage.removeItem(continuationKey);
@@ -28,18 +31,15 @@ if (_continuation) {
     sessionStorage.removeItem(continuationKey)
     selectOrder()
 
+    let i = 0;
     setInterval(function () {
-
-        const days = getDoctorWorkDay()
-        console.log(days)
-        for (let index = 0; index < days.length; index++) {
-            const i = ((index + 1) + days.length) % days.length
-            if (days[i].querySelector("p.mt5.f10.font-blue").innerText == "有号") {
-                days[index].click()
-                days[i].click()
-                break;
-            }
-
+        if (cardDay == null) {
+            const days = getDoctorWorkDay()
+            days[i].click()
+            i = ((i + 1) + days.length) % days.length
+        }else {
+            request_date = null
+            getDoctorlist(cardDay)
         }
     }, 2000)
 
@@ -72,7 +72,10 @@ function selectOrder() {
                 for (const record of records) {
                     for (const no of record.addedNodes) {
                         if (no.isEqualNode(document.querySelector("#one_schedule > div.weui-panel.mt5"))) {
+                            // exist card
+                            cardDay = no.querySelector("div > div > div > a > div.weui-cell__bd > p").innerText.split(' ')[0]
                             for (const d of no.querySelectorAll("div > div > div > a.open-popup")) {
+                                // 预约挂号
                                 d.click()
                                 break;
                             }

@@ -7,9 +7,15 @@ if (current_url.indexOf("recommend") > 0) {
     console.log("start renCai")
     renCai()
 } else if (current_url.indexOf("detail") > 0) {
-    console.log("start jianli")
-    jianli()
+    // console.log("start jianli")
+    // jianli()
+}else if (current_url.indexOf("search") > 0) {
 
+}
+
+function search() {
+    checkbox_path = "#root > div.app-main > div.app-main__content > div.talent-search.is-dependent > div.search-extra > div.search-extra__filter > div.km-checkbox.km-control.km-checkbox--checked.km-checkbox--primary.km-checkbox--small > div.km-checkbox__icon.km-checkbox__icon--checked > input"
+    document.querySelector(checkbox_path).checked = true
 }
 
 function renCai() {
@@ -25,7 +31,7 @@ function renCai() {
     city_path = basic_info__extra + " > span:nth-child(1)"
     work_status_path = basic_path + " > span:nth-child(5)"
     is_read_path = "div > div"
-    activity_statuses = ["talent-basic-info__state is-latest", "talent-basic-info__state is-today"]
+    activity_statuses = ["talent-basic-info__state is-latest", "talent-basic-info__state is-today", "talent-basic-info__state is-activity"]
 
     setInterval(function () {
         console.log("scroll down")
