@@ -37,8 +37,7 @@ if (_continuation) {
             const days = getDoctorWorkDay()
             days[i].click()
             i = ((i + 1) + days.length) % days.length
-        }else {
-            request_date = null
+        } else {
             getDoctorlist(cardDay)
         }
     }, 2000)
@@ -68,7 +67,6 @@ function selectOrder() {
         for (const wd of getDoctorWorkDay()) {
             var mo = new MutationObserver((records) => {
                 // console.log('Previous attribute value: ' + record[0].type);
-
                 for (const record of records) {
                     for (const no of record.addedNodes) {
                         if (no.isEqualNode(document.querySelector("#one_schedule > div.weui-panel.mt5"))) {
@@ -79,14 +77,15 @@ function selectOrder() {
                                 d.click()
                                 break;
                             }
-                        }
-
-                        if (no.isEqualNode(document.querySelector("#time_list > p:nth-child(1)"))) {
+                        } else if (no.isEqualNode(document.querySelector("#time_list > p:nth-child(1)"))) {
                             no.click()
                             const ok = document.querySelector("#half > div.weui-popup__modal.pt0 > div > div.weui-form-preview > div > button")
                             ok.click()
                             sessionStorage.setItem(continuationKey, "payConfirm");
+                            pushMessageWeixin2(new Date().toLocaleString() + "准备付款")
                             break;
+                        } else {
+                            cardDay = null;
                         }
                     }
                 }
@@ -108,7 +107,6 @@ function payConfirm() {
                 console.log(record.target.style["display"])
                 if (record.attributeName == "style" && record.target.style["display"] == "") {
                     document.querySelector("#submitPay").click()
-                    pushMessageQQ(new Date().toLocaleString() + "准备付款")
                 }
             }
         })
@@ -143,6 +141,7 @@ function pushMessageQQ(message) {
 }
 
 function pushMessageWeixin(message) {
+
     GM_xmlhttpRequest({
         method: "POST",
         url: "https://sctapi.ftqq.com/SCT27465TNbCSzkpKq98WpbY4dasMxERb.send?title=message",
@@ -150,6 +149,34 @@ function pushMessageWeixin(message) {
             "Content-Type": "application/x-www-form-urlencoded;charset=utf-8"
         },
         data: "content=" + message,
+        onload: function (response) {
+            console.log("请求成功");
+            console.log(response.responseText);
+        },
+        onerror: function (response) {
+            console.log("请求失败");
+        }
+
+    })
+}
+
+function pushMessageWeixin2(message) {
+    GM_xmlhttpRequest({
+        method: "POST",
+        url: "http://wxpusher.zjiecode.com/api/send/message",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        data: JSON.stringify ({
+            "appToken": "AT_Meh4ytPtW7cm71rfS6kGwqo7uQg0dPQx",
+            "content": "医院",
+            "summary": message,
+            "topicIds": [],
+            "uids": [
+                "UID_X0l3mGL1oYeYDWBHtiTFkyiKSpzS"
+            ],
+            "url": "http://wxpusher.zjiecode.com"
+        }),
         onload: function (response) {
             console.log("请求成功");
             console.log(response.responseText);
