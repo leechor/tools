@@ -1,4 +1,4 @@
+let body = $response.body
 
-let body="abc"
-
-$done({body})
+$response.body="{abc}"
+$done({doby})
