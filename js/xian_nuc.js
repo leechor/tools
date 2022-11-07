@@ -78,7 +78,12 @@ const createResultSuc = (data) => {
 
 const getRecentNuc = () => {
     const tem = createResultSuc(createNuc());
-    tem["data"]["todayCollectTime"] = `${dateFormat(todayCollectTime, timeFormatFirst)}`;
+    result = null;
+    if(todayCollectTime != null) {
+        result = `${dateFormat(todayCollectTime, timeFormatFirst)}`;
+    }
+    
+    tem["data"]["todayCollectTime"] = result;
     return tem;
 };
 
@@ -99,7 +104,7 @@ const getSxNucListNew = () => {
     for (let i = 0; i < 9; i++) {
         delLastRecordTime.setDate(delLastRecordTime.getDate() - i);
         lastRecordCollectTime.setDate(lastRecordCollectTime.getDate() - i);
-        const nuc = createNucP(delLastRecordTime, lastRecordCollectTime, timeFormatsecond);
+        const nuc = createNucP(delLastRecordTime, lastRecordCollectTime, timeFormatSecond);
         nucList["nucList"].push(nuc);
     }
 
