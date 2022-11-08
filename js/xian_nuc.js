@@ -11,10 +11,40 @@ const $done = (any) => {
 }
 
 ////////////////////////////////////////////////
+function randomNum(minNum,maxNum){ 
+    switch(arguments.length){ 
+        case 1: 
+            return parseInt(Math.random()*minNum+1,10); 
+        break; 
+        case 2: 
+            return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10); 
+        break; 
+            default: 
+                return 0; 
+            break; 
+    } 
+} 
 
-const lastRecordCollectTime = new Date("2022-11-05 07:21:03");
-const delLastRecordTime = new Date("2022-11-05 15:01:03");
-const todayCollectTime = new Date("2022-11-06 07:21:03");
+function random60() {
+    return randomNum(0, 60);
+};
+
+let now = new Date();
+now.setHours(6);
+let yesdayCollect = new Date();
+yesdayCollect.setDate(now.getDate() - 1);
+
+yesdayCollect.setMinutes(random60());
+yesdayCollect.setSeconds(random60());
+const lastRecordCollectTime = yesdayCollect;
+
+let yesdayDel = new Date(yesdayCollect);
+yesdayDel.setHours(yesdayCollect.getHours() + 6);
+yesdayDel.setMinutes(random60());
+yesdayDel.setSeconds(random60());
+const delLastRecordTime = yesdayDel;
+
+const todayCollectTime = now;
 const timeFormatFirst = 'yyyy/MM/dd hh:mm:ss';
 const timeFormatSecond = 'yyyy-MM-dd hh:mm:ss';
 
@@ -104,6 +134,10 @@ const getSxNucListNew = () => {
     for (let i = 0; i < 9; i++) {
         delLastRecordTime.setDate(delLastRecordTime.getDate() - i);
         lastRecordCollectTime.setDate(lastRecordCollectTime.getDate() - i);
+        delLastRecordTime.setMinutes(random60());
+        delLastRecordTime.setSeconds(random60());
+        lastRecordCollectTime.setMinutes(random60());
+        lastRecordCollectTime.setSeconds(random60());
         const nuc = createNucP(delLastRecordTime, lastRecordCollectTime, timeFormatSecond);
         nucList["nucList"].push(nuc);
     }
