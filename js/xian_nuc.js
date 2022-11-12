@@ -128,8 +128,7 @@ const getNucCollect = () => {
 }
 
 const getSxNucListNew = () => {
-    const nucList = {};
-    nucList["nucList"] = [];
+    const nucList = [];
 
     for (let i = 0; i < 9; i++) {
         delLastRecordTime.setDate(delLastRecordTime.getDate() - i);
@@ -138,12 +137,15 @@ const getSxNucListNew = () => {
         delLastRecordTime.setSeconds(random60());
         lastRecordCollectTime.setMinutes(random60());
         lastRecordCollectTime.setSeconds(random60());
+
         const nuc = createNucP(delLastRecordTime, lastRecordCollectTime, timeFormatSecond);
-        nucList["nucList"].push(nuc);
+        nucList.push(nuc);
     }
 
     const tem = createResultSuc();
-    tem["data"] = nucList;
+    tem["data"] = {};
+    tem["data"]["nucInfo"] = nucList[0];
+    tem["data"]["nucList"] = nucList;
     return tem;
 }
 
